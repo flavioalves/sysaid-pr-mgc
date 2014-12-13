@@ -1,0 +1,159 @@
+.ui-dialog{
+	margin-top: 40px;
+}
+
+.sysaid-extension-body {
+	background: #e6ebee;
+}
+
+#listaOS {
+	margin-top: 20px;
+}
+
+.os-table.ui-datatable table thead tr th.ui-state-default {
+	background: lightgray;
+	color: black;
+	border: 1px solid #A2A2A2;
+	border-bottom: 2px solid #000;
+	font-size: 12px;
+	padding-left: 11px;
+	vertical-align: middle;
+	border-bottom: 1px solid #A2A2A2;
+}
+
+.os-table.ui-datatable thead th, .os-table .ui-datatable tbody td, .os-table.ui-datatable tfoot td {
+	border: none;
+}
+
+.os-table.ui-state-highlight, .os-table .ui-widget-content .ui-state-highlight, .os-table .ui-widget-header .ui-state-highlight {
+	border: 1px solid #E6F3E5;
+	border-bottom: 1px solid #D5D5D5;
+	background-color: #E6F3E5;
+	color: black;
+	font-size: 12px;
+}
+
+.link {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-label-container label.ui-state-hover {
+	font-weight: bold;
+	color: black;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
+	width: 22px;
+}
+
+
+.sysaid-extension-body .sysaid-extension-module {
+	padding: 40px;
+	margin: 30px;
+	border: 1px solid #9A9A9A;
+	border-radius: 7px;
+	background-color: white;
+}
+
+.sysaid-extension-body .sysaid-extension-module h3 {
+	margin-top: 0px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .medium-form {
+	width: 600px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .form-actions {
+	overflow: auto;
+}
+
+.sysaid-extension-body .sysaid-extension-module .form-actions button.ui-button {	
+	width: 100px;
+	margin-top: 12px;
+	float: right;
+	margin-left: 14px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .default-table .check-column{
+	white-space:normal; 
+	text-align: center;
+	width: 40px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .default-table .title-column {
+	font-weight: bold;
+}
+	
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	width: 23px;
+}
+
+
+.ui-datatable {
+	padding-bottom: 2px;
+}
+
+.buttons {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.msg-error {
+	display: block;
+	color: red;
+}
+
+.row:first-child.form-row {
+    padding-top: 3px;
+}
+
+.row.form-row {
+	padding-top: 10px;
+	border-bottom: 1px #f1f1f1 solid;
+}
+
+ .form-row > [class*="col-"] {
+ 	margin-bottom:5px;
+}
+  
+.required {
+	color: red;
+	font-weight: bold;
+	font-size: 16px;
+}
+  
+.ui-widget {
+    font-size: 12px;
+}
+
+.ui-widget .ui-widget {
+    font-size: 12px;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-size: 12px;
+}  
+
+.ui-dialog-top {
+	top: 30px !important;
+}
+
+.ui-datatable tbody td.coluna-direita {
+	text-align: right;
+}
+
+.ui-datatable tbody td.coluna-vermelha {
+	background-color: red;
+}
+
+.ui-datatable tfoot td {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 99%;
+}
+
