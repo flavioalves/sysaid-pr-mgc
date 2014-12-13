@@ -24,19 +24,22 @@
 
 4. Colocar a pasta "NOME_PROJETO", com os arquivos html que chamam em seus iframes as páginas desse módulo, dentro da pasta do sysad ($SYSAID_HOME/)
 
-Clone this repository:
-	git clone git@github.com:flavioalves/sysaid-module.git my_new_project
-	cd my_new_project
+
+## Clone this repository
+
+	Clone this repository:
+	  git clone git@github.com:flavioalves/sysaid-module.git my_new_project
+	  cd my_new_project
 	
 	
-Set git remote pointing to your repository:
-	git remote set-url origin https://github.com/path.git
-	git push -u origin master
+	Set git remote pointing to your repository:
+	  git remote set-url origin https://github.com/path.git
+	  git push -u origin master
 
 
-Rename the project to a name of your choosing and commit:
-	Eclipse > rename project 
-	git add .
-	git commit -am 'Renaming my project'
+	Rename the project to a name of your choosing and commit:
+	  Eclipse > rename project 
+	  git add .
+	  git commit -am 'Renaming my project'
 	
 	
