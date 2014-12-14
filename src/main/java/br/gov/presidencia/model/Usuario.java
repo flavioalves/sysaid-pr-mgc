@@ -53,6 +53,9 @@ public class Usuario extends GenericModel implements Serializable {
 	@JoinTable(name = "user2group", joinColumns = @JoinColumn(name = "USER_NAME"), inverseJoinColumns = @JoinColumn(name = "group_name"))
 	private List<Grupo> grupos;
 
+	
+	private String ramal;
+	
 	@Transient
 	private Boolean indisponivelNoPeriodo;
 
@@ -122,6 +125,14 @@ public class Usuario extends GenericModel implements Serializable {
 
 	public void setAdministrador(Boolean administrador) {
 		this.administrador = administrador;
+	}
+
+	public String getRamal() {
+		return ramal;
+	}
+
+	public void setRamal(String ramal) {
+		this.ramal = ramal;
 	}
 
 	@Override

@@ -1,4 +1,3 @@
-.ui-dialog{
 	margin-top: 40px;
 }
 
@@ -71,7 +70,7 @@ span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-la
 
 .sysaid-extension-body .sysaid-extension-module .form-actions button.ui-button {	
 	width: 100px;
-	margin-top: 12px;
+	margin: 3px 0px;
 	float: right;
 	margin-left: 14px;
 }
@@ -84,7 +83,19 @@ span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-la
 
 .sysaid-extension-body .sysaid-extension-module .default-table .title-column {
 	font-weight: bold;
+	float: left;
 }
+
+.sysaid-extension-body .sysaid-extension-module .row {
+	margin: 20px 10px;
+}
+
+.sysaid-extension-body .sysaid-extension-module input.ui-input {
+	width: 500px;
+	margin-right: 20px;	
+}
+
+
 	
 .ui-selectonemenu .ui-selectonemenu-trigger {
 	width: 23px;

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+
+	<ui:define name="body">
+		
+		<div class="row">
+		
+			<h3>
+				<h:outputText value="#{msg['menu.gerente']}"  />
+			</h3>
+			
+			<h:outputText value="#{msg['menu.gerente.texto']}" />
+		</div>
+		
+		
+		
+		<h:form id="form">
+		
+			<div class="row">
+				<p:inputText label="Nome" styleClass="ui-input"/>			
+				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" id="iconOnly"  icon="ui-icon-search" title="pesquisar" value="Pesquisar" update="listGerentes"/>
+				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}"  icon="ui-icon-note" title="Novo" value="Novo" styleClass="pull-right"/>
+		    </div>
+			
+ 
+			<h:panelGroup layout="block" styleClass="form-actions row">		
+				
+				<p:dataTable id="listGerentes" var="gerente" value="#{gerenteDeContasMB.listaGerentes}"  
+				paginator="true" rows="50" paginatorPosition="bottom" 
+				styleClass="default-table" rendered="#{gerenteDeContasMB.shouldRender}">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Login" styleClass="title-column" />
+						</f:facet> 
+	          			 #{gerente.userName}
+	        		</p:column>
+	
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" styleClass="title-column" />
+						</f:facet> 
+	          			 #{gerente.nome}
+	        		</p:column>
+	
+	
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="E-Mail" styleClass="title-column" />
+						</f:facet> 
+	          			  #{gerente.email}
+	        		</p:column>
+	        		
+	        		<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ramal" styleClass="title-column" />
+						</f:facet> 
+	          			 #{gerente.ramal}
+	        		</p:column>
+	        		
+	        		<p:column width="252">
+						<f:facet name="header">							
+							<h:outputText value="Ações" styleClass="title-column" />							
+						</f:facet> 
+	          			<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" id="editar-gerente"  icon="ui-icon-pencil" title="Editar" value="Editar" />
+	          			<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" id="excluir-gerente"  icon="ui-icon-close" title="Excluir" value="Excluir" />
+	        		</p:column>	        
+					
+					
+				</p:dataTable>
+
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
