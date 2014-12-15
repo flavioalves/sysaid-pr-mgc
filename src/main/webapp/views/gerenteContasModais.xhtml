@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:dialog header="Associar gerente responsável" widgetVar="listaTecnicoPopup" styleClass="gerente-modal"
+		modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+		width="600" position="top">		
+		<div class="row search-bar" style="margin: 10px;">	 			
+			<p:outputLabel value="Nome gerente:" for="acGerente" style="margin-right: 6px" />			
+        	<p:autoComplete id="acGerente" value="#{gerenteDeContasMB.nomeGerente}" completeMethod="#{gerenteDeContasMB.autocomplete}"/>
+			<span class="ui-icon ui-icon-search" ></span>        		        	
+ 	 	</div>		
+		<hr/>	
+		<div class="row">	 	 			 	
+		    <p:pickList id="pickList" value="#{gerenteDeContasMB.areasAtendimento}" var="area"
+		                itemValue="#{area}" itemLabel="#{area.nome}" styleClass="atendimentoPickList"
+		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+		                
+				<f:facet name="sourceCaption">Áreas de trabalho</f:facet>
+	        	<f:facet name="targetCaption">Áreas Associada</f:facet>	                
+		    </p:pickList>
+			<hr/>
+			
+			<p:commandButton  icon="ui-icon-disk" title="Salvar" value="Salvar" styleClass="pull-right"/>
+			<p:commandButton  icon="ui-icon-arrowreturnthick-1-w" title="Voltar" value="Voltar" styleClass="pull-right"/>
+		</div>
+	</p:dialog>
+
+
+</ui:composition>

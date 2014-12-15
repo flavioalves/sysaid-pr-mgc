@@ -18,22 +18,17 @@
 			<h:outputText value="#{msg['menu.gerente.texto']}" />
 		</div>
 		
+		<h:form>
 		
-		
-		<h:form id="form">
-		
-			<div class="row">
-				<p:inputText label="Nome" styleClass="ui-input"/>			
-				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" id="iconOnly"  icon="ui-icon-search" title="pesquisar" value="Pesquisar" update="listGerentes"/>
-				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}"  icon="ui-icon-note" title="Novo" value="Novo" styleClass="pull-right"/>
+			<div class="row content-block">
+				<p:inputText label="Nome" styleClass="ui-input" value="#{gerenteDeContasMB.nomeGerentePesquisado}" id="input-search"  />			
+				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" icon="ui-icon-search" title="pesquisar" value="Pesquisar" ajax="true" update="listaGerentes" process="@this"/>
+				<p:commandButton  icon="ui-icon-note" title="Novo" value="Novo" styleClass="pull-right"/>
 		    </div>
 			
- 
-			<h:panelGroup layout="block" styleClass="form-actions row">		
-				
-				<p:dataTable id="listGerentes" var="gerente" value="#{gerenteDeContasMB.listaGerentes}"  
-				paginator="true" rows="50" paginatorPosition="bottom" 
-				styleClass="default-table" rendered="#{gerenteDeContasMB.shouldRender}">
+ 			<div class="row">
+				<p:dataTable id="listaGerentes" var="gerente" value="#{gerenteDeContasMB.listaGerentes}" rendered="#{gerenteDeContasMB.shouldRender}"
+				paginator="true" rows="50" paginatorPosition="bottom" styleClass="default-table" >
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Login" styleClass="title-column" />
@@ -63,19 +58,17 @@
 	          			 #{gerente.ramal}
 	        		</p:column>
 	        		
-	        		<p:column width="252">
+	        		<p:column width="18%">
 						<f:facet name="header">							
 							<h:outputText value="Ações" styleClass="title-column" />							
 						</f:facet> 
-	          			<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" id="editar-gerente"  icon="ui-icon-pencil" title="Editar" value="Editar" />
-	          			<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" id="excluir-gerente"  icon="ui-icon-close" title="Excluir" value="Excluir" />
+	          			<p:commandButton  id="editar-gerente"  icon="ui-icon-pencil" title="Editar" value="Editar" oncomplete="PF('listaTecnicoPopup').show()"/>
+	          			<p:commandButton  id="excluir-gerente"  icon="ui-icon-trash" title="Excluir" value="Excluir" style="margin-left: 10px"/>
 	        		</p:column>	        
-					
-					
 				</p:dataTable>
-
-			</h:panelGroup>
-
+			</div>
+				
+			<ui:include src="/views/gerenteContasModais.xhtml" />
 		</h:form>
 
 	</ui:define>

@@ -53,7 +53,7 @@ public class Usuario extends GenericModel implements Serializable {
 	@JoinTable(name = "user2group", joinColumns = @JoinColumn(name = "USER_NAME"), inverseJoinColumns = @JoinColumn(name = "group_name"))
 	private List<Grupo> grupos;
 
-	
+	@Column(name = "PHONE")
 	private String ramal;
 	
 	@Transient

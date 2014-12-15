@@ -9,6 +9,9 @@
 	margin-top: 20px;
 }
 
+hr {
+	border-bottom: 1px solid #ddd;
+}
 .os-table.ui-datatable table thead tr th.ui-state-default {
 	background: lightgray;
 	color: black;
@@ -90,15 +93,65 @@ span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-la
 	margin: 20px 10px;
 }
 
+
+.sysaid-extension-body .sysaid-extension-module .content-block {
+	//background: #f6f7f9;
+	background: #d9d9d9;
+	border-bottom: 1px solid gray;
+	padding: 30px 12px;
+}
+
 .sysaid-extension-body .sysaid-extension-module input.ui-input {
 	width: 500px;
 	margin-right: 20px;	
 }
 
+.atendimentoPickList tbody tr td {
+	padding: 10px;
+}
 
+.atendimentoPickList tbody tr td:first-child {
+	width: 47%;
+	padding: 0px;
+}
+
+.atendimentoPickList tbody tr td:last-child {
+	width: 47%;	
+	padding: 0px;
+}
+
+.atendimentoPickList .ui-picklist-filter-container input {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+.atendimentoPickList tbody tr td ul.ui-widget-content.ui-picklist-list {
+	width: 100%;
+}
+
+.sysaid-extension-body .sysaid-extension-module .ui-dialog-titlebar {
+	border-bottom: 1px solid #ddd;	
+	padding: 0px;
+	padding-bottom: 10px;
+	font-size: 15px !important;
+}
+	
+.sysaid-extension-body .sysaid-extension-module .ui-dialog-titlebar span {
+	font-size: 15px !important;
+}	
 	
 .ui-selectonemenu .ui-selectonemenu-trigger {
 	width: 23px;
+}
+
+.gerente-modal .search-bar span.ui-icon.ui-icon-search {
+	position: absolute;
+	top: 22px;
+	right: 35px;
+}
+
+.ui-autocomplete input{
+	width: 460px;
 }
 
 
