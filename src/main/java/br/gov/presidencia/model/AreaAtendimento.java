@@ -33,4 +33,9 @@ public class AreaAtendimento {
 		this.sigla = sigla;
 		this.codEstruturado = codEstruturado;
 	}
+	
+	@Override
+	public String toString() {		
+		return nome;
+	}
 }

@@ -12,6 +12,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<hibernate.version>4.2.1.Final</hibernate.version>
+		<slf4j-version>1.6.1</slf4j-version>
+		<mojarra-version>2.2.5</mojarra-version>
+		<primefaces-version>5.0</primefaces-version>
 
 		<!-- other plugin versions -->
 		<version.compiler.plugin>2.3.1</version.compiler.plugin>
@@ -34,14 +37,24 @@
 
 
 	<dependencies>
-		<!-- PrimeFaces -->
+
+		<!-- JSF: Mojarra, PrimeFaces -->
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>${mojarra-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>${mojarra-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.0</version>
-			<scope>compile</scope>
+			<version>${primefaces-version}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.primefaces.extensions</groupId>
 			<artifactId>primefaces-extensions</artifactId>
@@ -55,7 +68,15 @@
 			<version>1.0.10</version>
 			<scope>compile</scope>
 		</dependency>
-
+		
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
@@ -70,7 +91,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- JSF 2 -->
+		<!-- JSF 2 
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-api</artifactId>
@@ -84,9 +105,7 @@
 			<version>2.2.7</version>
 			<scope>compile</scope>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.omnifaces</groupId> <artifactId>omnifaces</artifactId> 
-			<version>1.8.1</version> <scope>compile</scope> </dependency> -->
+-->
 
 		<dependency>
 			<groupId>log4j</groupId>

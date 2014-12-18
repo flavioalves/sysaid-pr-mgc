@@ -11,15 +11,18 @@
 	<p:dialog header="Associar gerente responsável" widgetVar="listaTecnicoPopup" styleClass="gerente-modal"
 		modal="true" showEffect="fade" hideEffect="fade" resizable="false"
 		width="600" position="top">		
+		
 		<div class="row search-bar" style="margin: 10px;">	 			
 			<p:outputLabel value="Nome gerente:" for="acGerente" style="margin-right: 6px" />			
         	<p:autoComplete id="acGerente" value="#{gerenteDeContasMB.nomeGerente}" completeMethod="#{gerenteDeContasMB.autocomplete}"/>
 			<span class="ui-icon ui-icon-search" ></span>        		        	
- 	 	</div>		
+ 	 	</div>
+ 	 			
 		<hr/>	
-		<div class="row">	 	 			 	
+		
+		<div class="row">			 	 			 
 		    <p:pickList id="pickList" value="#{gerenteDeContasMB.areasAtendimento}" var="area"
-		                itemValue="#{area}" itemLabel="#{area.nome}" styleClass="atendimentoPickList"
+		                itemValue="#{area}" itemLabel="#{area}" styleClass="atendimentoPickList"
 		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
 		                
 				<f:facet name="sourceCaption">Áreas de trabalho</f:facet>
@@ -27,8 +30,12 @@
 		    </p:pickList>
 			<hr/>
 			
-			<p:commandButton  icon="ui-icon-disk" title="Salvar" value="Salvar" styleClass="pull-right"/>
-			<p:commandButton  icon="ui-icon-arrowreturnthick-1-w" title="Voltar" value="Voltar" styleClass="pull-right"/>
+			<p:commandButton icon="ui-icon-disk" title="Salvar" value="Salvar" styleClass="pull-right" 
+							 actionListener="#{gerenteDeContasMB.salvarVinculo}" update="@form" />
+				
+			<p:commandButton icon="ui-icon-arrowreturnthick-1-w" title="Voltar" value="Voltar" 
+							 actionListener="#{gerenteDeContasMB.limparVinculo}" 
+							 styleClass="pull-right" onclick="listaTecnicoPopup.hide()"/>
 		</div>
 	</p:dialog>
 

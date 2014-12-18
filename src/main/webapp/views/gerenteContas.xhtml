@@ -18,54 +18,64 @@
 			<h:outputText value="#{msg['menu.gerente.texto']}" />
 		</div>
 		
-		<h:form>
-		
-			<div class="row content-block">
-				<p:inputText label="Nome" styleClass="ui-input" value="#{gerenteDeContasMB.nomeGerentePesquisado}" id="input-search"  />			
-				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" icon="ui-icon-search" title="pesquisar" value="Pesquisar" ajax="true" update="listaGerentes" process="@this"/>
-				<p:commandButton  icon="ui-icon-note" title="Novo" value="Novo" styleClass="pull-right"/>
-		    </div>
+		<h:form id="mgc-form">
+			
+			<p:panel styleClass="row content-block"> 
+				<p:inputText label="Nome" styleClass="ui-input" value="#{gerenteDeContasMB.nomeGerentePesquisado}" 
+				id="nomeGerentePesquisado" required="true" />
+										
+				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" icon="ui-icon-search"
+					 title="pesquisar" value="Pesquisar" update="@form"/>
+					 
+				<p:commandButton  icon="ui-icon-note" title="Novo" value="Novo" styleClass="pull-right"
+					oncomplete="PF('listaTecnicoPopup').show()"/>			
+		    </p:panel>
 			
  			<div class="row">
-				<p:dataTable id="listaGerentes" var="gerente" value="#{gerenteDeContasMB.listaGerentes}" rendered="#{gerenteDeContasMB.shouldRender}"
-				paginator="true" rows="50" paginatorPosition="bottom" styleClass="default-table" >
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Login" styleClass="title-column" />
-						</f:facet> 
-	          			 #{gerente.userName}
-	        		</p:column>
-	
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Nome" styleClass="title-column" />
-						</f:facet> 
-	          			 #{gerente.nome}
-	        		</p:column>
-	
-	
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="E-Mail" styleClass="title-column" />
-						</f:facet> 
-	          			  #{gerente.email}
-	        		</p:column>
-	        		
-	        		<p:column>
-						<f:facet name="header">
-							<h:outputText value="Ramal" styleClass="title-column" />
-						</f:facet> 
-	          			 #{gerente.ramal}
-	        		</p:column>
-	        		
-	        		<p:column width="18%">
-						<f:facet name="header">							
-							<h:outputText value="Ações" styleClass="title-column" />							
-						</f:facet> 
-	          			<p:commandButton  id="editar-gerente"  icon="ui-icon-pencil" title="Editar" value="Editar" oncomplete="PF('listaTecnicoPopup').show()"/>
-	          			<p:commandButton  id="excluir-gerente"  icon="ui-icon-trash" title="Excluir" value="Excluir" style="margin-left: 10px"/>
-	        		</p:column>	        
-				</p:dataTable>
+				
+					<p:dataTable id="listaGerentes" var="gerente" value="#{gerenteDeContasMB.listaGerentes}" rendered="#{not empty gerenteDeContasMB.listaGerentes}"
+						paginator="true" rows="50" paginatorPosition="bottom" styleClass="default-table" >
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Login" styleClass="title-column" />
+							</f:facet> 
+		          			 #{gerente.userName}
+		        		</p:column>
+		
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Nome" styleClass="title-column" />
+							</f:facet> 
+		          			 #{gerente.nome}
+		        		</p:column>
+		
+		
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="E-Mail" styleClass="title-column" />
+							</f:facet> 
+		          			  #{gerente.email}
+		        		</p:column>
+		        		
+		        		<p:column>
+							<f:facet name="header">
+								<h:outputText value="Ramal" styleClass="title-column" />
+							</f:facet> 
+		          			 #{gerente.ramal}
+		        		</p:column>
+		        		
+		        		<p:column width="18%">
+							<f:facet name="header">							
+								<h:outputText value="Ações" styleClass="title-column" />							
+							</f:facet> 
+		          			<p:commandButton id="editar-gerente"  icon="ui-icon-pencil" title="Editar" value="Editar" 
+		          							 oncomplete="PF('listaTecnicoPopup').show()"/>
+		          							 
+		          			<p:commandButton id="excluir-gerente"  icon="ui-icon-trash" title="Excluir" value="Excluir" style="margin-left: 10px"
+		          			 			     actionListener="#{gerenteDeContasMB.excluirVinculo}" update="@form" />
+		        		</p:column>	        
+					</p:dataTable>
+				
 			</div>
 				
 			<ui:include src="/views/gerenteContasModais.xhtml" />

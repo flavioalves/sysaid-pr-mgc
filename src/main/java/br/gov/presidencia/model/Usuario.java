@@ -19,7 +19,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "SYSAID_USER")
-@NamedQueries({ @NamedQuery(name = "Usuario.findUserByName", query = "SELECT u FROM Usuario u where UPPER(u.userNameCalculado) LIKE '%UPPER(:nome)%' ORDER BY u.nome ASC"), })
+@NamedQueries({ @NamedQuery(name = "Usuario.findUserByName", query = "SELECT u FROM Usuario u where UPPER(u.userNameCalculado) LIKE :nome ORDER BY u.nome ASC"), })
 public class Usuario extends GenericModel implements Serializable {
 
 	@Transient

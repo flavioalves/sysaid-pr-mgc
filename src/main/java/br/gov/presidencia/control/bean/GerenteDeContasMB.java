@@ -1,29 +1,35 @@
 package br.gov.presidencia.control.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.model.DualListModel;
 
+import br.gov.presidencia.facade.UsuarioFacade;
 import br.gov.presidencia.model.AreaAtendimento;
 import br.gov.presidencia.model.Usuario;
 
-@ViewScoped
-@ManagedBean
+
+@Named
+@SessionScoped
 public class GerenteDeContasMB extends AbstractBean {
+
+	private static final long serialVersionUID = 1L;
 	private List<Usuario> listaGerentes;
+	
 	private String nomeGerentePesquisado;
 	private String nomeGerente;
-
+	
+	@Inject
+	private UsuarioFacade usuarioFachada;
 	private DualListModel<AreaAtendimento> areasAtendimento;
 	private boolean shouldRender;
 	
@@ -31,44 +37,38 @@ public class GerenteDeContasMB extends AbstractBean {
 	public void init() {
 		List<AreaAtendimento> areasAtendimentoSource = criarMockAreasAtendimento();
 		List<AreaAtendimento> areasAtendimentoTarget = new ArrayList<AreaAtendimento>();
-		areasAtendimento = new DualListModel<AreaAtendimento>(areasAtendimentoSource, areasAtendimentoTarget);
+		this.areasAtendimento = new DualListModel<AreaAtendimento>(areasAtendimentoSource, areasAtendimentoTarget);
+		this.nomeGerentePesquisado = "";
 		this.shouldRender = false;
-		this.listaGerentes = new ArrayList<Usuario>();
+		
 	}
 	
-	public void pesquisarGerente(ActionEvent actionEvent) {
-		
+	public void pesquisarGerente(ActionEvent event) {
 		if(nomeGerentePesquisado != null){
-			Usuario a = new Usuario();
-			a.setNome("Flávio Alves");
-			a.setEmail("flavio@presidencia.com.br");
-			a.setUserName("flavioalves");
-			a.setRamal("1351");
-	
-			Usuario b = new Usuario();
-			b.setNome("Alvaro Silva");
-			b.setEmail("alvaro@presidencia.com.br");
-			b.setUserName("alvarosilva");
-			b.setRamal("1551");
-	
-			Usuario c = new Usuario();
-			c.setNome("Cristiano Maia");
-			c.setEmail("cristiano@presidencia.com.br");
-			c.setUserName("Cristiano Maia");
-			c.setRamal("2290");
-	
-			this.listaGerentes.add(a);
-			this.listaGerentes.add(b);
-			this.listaGerentes.add(c);
-			this.shouldRender = true;
+			listaGerentes = usuarioFachada.findUsuarioByNome(nomeGerentePesquisado);
+			
+			if(listaGerentes != null && listaGerentes.size() > 0){
+				this.shouldRender = true;	
+			} else { 
+				addMessage("Não foram encontrados resultados para os parâmetros informados.");
+			}
 		}
-		
-		//addMessage("Welcome to Primefaces!!");
 	}
-
+	
+	public void salvarVinculo(ActionEvent event){
+		addMessage("Salvar");
+	}
+	
+	public void excluirVinculo(ActionEvent event){
+		addMessage("Excluir");
+	}
+	
+	public void limparVinculo(ActionEvent event){
+		addMessage("Limpar");
+	}
+	
 	public void addMessage(String summary) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				summary, null);
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
