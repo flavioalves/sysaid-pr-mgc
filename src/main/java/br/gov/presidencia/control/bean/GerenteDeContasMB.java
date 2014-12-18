@@ -1,6 +1,7 @@
 package br.gov.presidencia.control.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,9 +14,10 @@ import javax.inject.Named;
 
 import org.primefaces.model.DualListModel;
 
-import br.gov.presidencia.facade.UsuarioFacade;
+import br.gov.presidencia.facade.ServiceFacade;
 import br.gov.presidencia.model.AreaAtendimento;
 import br.gov.presidencia.model.Usuario;
+import br.gov.presidencia.model.VinculoGerente;
 
 
 @Named
@@ -24,28 +26,29 @@ public class GerenteDeContasMB extends AbstractBean {
 
 	private static final long serialVersionUID = 1L;
 	private List<Usuario> listaGerentes;
-	
+	private Usuario selectedGerente;
 	private String nomeGerentePesquisado;
 	private String nomeGerente;
 	
 	@Inject
-	private UsuarioFacade usuarioFachada;
+	private ServiceFacade serviceFachada;
 	private DualListModel<AreaAtendimento> areasAtendimento;
 	private boolean shouldRender;
+	private List<AreaAtendimento> areasAtendimentoSource;
+	List<AreaAtendimento> areasAtendimentoTarget;
 	
 	@PostConstruct
 	public void init() {
-		List<AreaAtendimento> areasAtendimentoSource = criarMockAreasAtendimento();
-		List<AreaAtendimento> areasAtendimentoTarget = new ArrayList<AreaAtendimento>();
+		areasAtendimentoSource = serviceFachada.listAreas();
+		areasAtendimentoTarget = new ArrayList<AreaAtendimento>();
 		this.areasAtendimento = new DualListModel<AreaAtendimento>(areasAtendimentoSource, areasAtendimentoTarget);
 		this.nomeGerentePesquisado = "";
 		this.shouldRender = false;
-		
 	}
 	
 	public void pesquisarGerente(ActionEvent event) {
 		if(nomeGerentePesquisado != null){
-			listaGerentes = usuarioFachada.findUsuarioByNome(nomeGerentePesquisado);
+			listaGerentes = serviceFachada.findUsuarioByNome(nomeGerentePesquisado);
 			
 			if(listaGerentes != null && listaGerentes.size() > 0){
 				this.shouldRender = true;	
@@ -55,20 +58,76 @@ public class GerenteDeContasMB extends AbstractBean {
 		}
 	}
 	
-	public void salvarVinculo(ActionEvent event){
-		addMessage("Salvar");
+	public void salvarVinculo(ActionEvent ev){				
+		if(selectedGerente != null){
+			for (AreaAtendimento area : areasAtendimento.getTarget()) {
+				VinculoGerente vinculo = new VinculoGerente();
+				vinculo.setCodLotacao(area.getCodUnidade().toString());
+				vinculo.setUserName(selectedGerente.getUserName());
+				vinculo.setNome(selectedGerente.getNome());
+				vinculo.setUserNameCadastro(getUsuarioLogadoCookie().getNome() != null ? getUsuarioLogadoCookie().getNome() : "sysaid"); 
+				vinculo.setDtCadastro(new Date());	
+				try {
+					serviceFachada.salvarVinculoGerente(vinculo);
+				} catch (Exception e) {
+					errorMessage("Ocorreu um erro ao salvar o vínculo.");
+				}
+			}
+			addMessage("Área(s) vinculas ao gerente de contas");
+		} else {
+			addMessage("Selecione um gerente para vincular a alguma área.");
+		}		
 	}
 	
-	public void excluirVinculo(ActionEvent event){
-		addMessage("Excluir");
+	public void editarVinculo(ActionEvent ev){ 
+		selectedGerente = (Usuario) ev.getComponent().getAttributes().get("gerente");			
+		carregaVinculosExistentes(selectedGerente.getUserName());		
 	}
 	
-	public void limparVinculo(ActionEvent event){
-		addMessage("Limpar");
+	private void carregaVinculosExistentes(String userNameGerente){
+		List<VinculoGerente> vinculosGerenteAtual = serviceFachada.listVinculosDeArearPorGerente(userNameGerente);
+		if(vinculosGerenteAtual != null && vinculosGerenteAtual.size() > 0){
+			List<String> codLotacoes = new ArrayList<String>();
+			for (VinculoGerente vinculoGerente : vinculosGerenteAtual) {
+				codLotacoes.add(vinculoGerente.getCodLotacao());
+			}
+			
+			List<AreaAtendimento> areasVinculadas = serviceFachada.listAreasByCodLotacao(codLotacoes);
+			//get codigo lotacao end find areas		
+			areasAtendimento.getTarget().clear();
+			areasAtendimento.getTarget().addAll(areasVinculadas);			
+		}else {
+			//limpa vinculos
+			areasAtendimentoTarget = new ArrayList<AreaAtendimento>();
+			this.areasAtendimento = new DualListModel<AreaAtendimento>(areasAtendimentoSource, areasAtendimentoTarget);
+		}
+	}
+	
+	public void excluirVinculo(ActionEvent ev){
+		selectedGerente = (Usuario) ev.getComponent().getAttributes().get("gerente");
+		List<VinculoGerente> vinculosGerenteAtual = serviceFachada.listVinculosDeArearPorGerente(selectedGerente.getUserName());
+		for (VinculoGerente vinculoGerente : vinculosGerenteAtual) {
+			try {
+				serviceFachada.excluirVinculo(vinculoGerente);
+			} catch (Exception e) {
+				errorMessage("Erro ao excluir vínculos.");
+			}
+		}
+		addMessage("Vinculos excluidos com sucesso!");
+	}
+	
+	
+	public void limparVinculo(ActionEvent ev){
+		//addMessage("Limpar");
 	}
 	
 	public void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+	
+	public void errorMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
@@ -80,13 +139,14 @@ public class GerenteDeContasMB extends AbstractBean {
 		this.listaGerentes = listaGerentes;
 	}
 	
-   public List<String> autocomplete(String query) {
-        List<String> results = new ArrayList<String>();
-        for(int i = 0; i < 10; i++) {
-            results.add(query + i);
-        }
-         
-        return results;
+   public List<Usuario> autocomplete(String query) {
+		listaGerentes = serviceFachada.findUsuarioByNome(query);
+		
+		if(listaGerentes != null && listaGerentes.size() > 0){
+			this.shouldRender = true;	
+		} 
+		return listaGerentes;
+		
     }
 
 	public boolean isShouldRender() {
@@ -114,23 +174,20 @@ public class GerenteDeContasMB extends AbstractBean {
 		this.areasAtendimento = areasAtendimento;
 	}
 
-	private List<AreaAtendimento> criarMockAreasAtendimento(){
-		List<AreaAtendimento> mock = new ArrayList<AreaAtendimento>();
-		AreaAtendimento a = new AreaAtendimento("A Nome area 1", "Sigla Area A","00.00.00.01");
-		AreaAtendimento b = new AreaAtendimento("B Nome area 2", "Sigla Area B","00.00.00.02");
-		AreaAtendimento c = new AreaAtendimento("C Nome area 3", "Sigla Area C","00.00.00.03");
-		mock.add(a);
-		mock.add(b);
-		mock.add(c);
-		return mock;
-	}
-
 	public String getNomeGerente() {
 		return nomeGerente;
 	}
 
 	public void setNomeGerente(String nomeGerente) {
 		this.nomeGerente = nomeGerente;
+	}
+
+	public Usuario getSelectedGerente() {
+		return selectedGerente;
+	}
+
+	public void setSelectedGerente(Usuario selectedGerente) {
+		this.selectedGerente = selectedGerente;
 	}
 
 }

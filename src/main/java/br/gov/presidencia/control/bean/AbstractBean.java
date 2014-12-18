@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.primefaces.context.RequestContext;
 
-import br.gov.presidencia.facade.UsuarioFacade;
+import br.gov.presidencia.facade.ServiceFacade;
 import br.gov.presidencia.model.Usuario;
 import br.gov.presidencia.util.JSFMessageUtil;
 
@@ -24,7 +24,7 @@ public abstract class AbstractBean implements Serializable {
 	
 	
 	@Inject
-	private UsuarioFacade usuarioFacade;
+	private ServiceFacade usuarioFacade;
 
 	public AbstractBean() {
 		super();

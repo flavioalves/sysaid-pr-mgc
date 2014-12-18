@@ -49,8 +49,15 @@ public abstract class GenericDao<T> implements Serializable {
 		this.entityClass = entityClass;
 	}
 
-	public void save(T entity) {
-		getEntityManager().persist(entity);
+	public void save(T entity) throws Exception {
+		try {
+			beginTransaction();
+			getEntityManager().persist(entity);
+			commit();
+		} catch (Exception e) {
+			rollback();
+			throw e;
+		}
 	}
 	
 	public void delete(Object id, Class<T> classe) {
@@ -59,12 +66,27 @@ public abstract class GenericDao<T> implements Serializable {
         getEntityManager().remove(entityToBeRemoved);
 	}
 	
-	public void delete(T entityClass) {
-        getEntityManager().remove(entityClass);
+	public void delete(T entityClass) throws Exception {
+		
+		try {
+			beginTransaction();
+			getEntityManager().remove(entityClass);
+			commit();
+		} catch (Exception e) {
+			rollback();
+			throw e;
+		}	
 	}
 
-	public T update(T entity) {
-		return getEntityManager().merge(entity);
+	public void update(T entity) throws Exception {
+		try {
+			beginTransaction();
+			getEntityManager().merge(entity);
+			commit();
+		} catch (Exception e) {
+			rollback();
+			throw e;
+		}	
 	}
 
 	public void refresh(T entity) {

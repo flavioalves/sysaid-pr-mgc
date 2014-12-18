@@ -19,7 +19,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "SYSAID_USER")
-@NamedQueries({ @NamedQuery(name = "Usuario.findUserByName", query = "SELECT u FROM Usuario u where UPPER(u.userNameCalculado) LIKE :nome ORDER BY u.nome ASC"), })
+@NamedQueries({ @NamedQuery(name = "Usuario.findUserByName", query = "SELECT u FROM Usuario u where UPPER(u.userNameCalculado) LIKE :nome OR UPPER(u.userName) LIKE :nome  ORDER BY u.nome ASC"), })
 public class Usuario extends GenericModel implements Serializable {
 
 	@Transient
@@ -33,7 +33,7 @@ public class Usuario extends GenericModel implements Serializable {
 	@Column(name = "USER_NAME", updatable = false, insertable = false)
 	private String userName;
 
-	@Column(name = "FIRST_NAME", updatable = false, insertable = false)
+	@Column(name = "DISPLAY_NAME", updatable = false, insertable = false)
 	private String nome;
 
 	@Column(name = "LAST_NAME", updatable = false, insertable = false)
@@ -54,7 +54,7 @@ public class Usuario extends GenericModel implements Serializable {
 	private List<Grupo> grupos;
 
 	@Column(name = "PHONE")
-	private String ramal;
+	private String telefone;
 	
 	@Transient
 	private Boolean indisponivelNoPeriodo;
@@ -125,14 +125,14 @@ public class Usuario extends GenericModel implements Serializable {
 
 	public void setAdministrador(Boolean administrador) {
 		this.administrador = administrador;
+	}	
+
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public String getRamal() {
-		return ramal;
-	}
-
-	public void setRamal(String ramal) {
-		this.ramal = ramal;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	@Override
@@ -165,6 +165,11 @@ public class Usuario extends GenericModel implements Serializable {
 		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {		
+		return nome;
 	}
 
 }

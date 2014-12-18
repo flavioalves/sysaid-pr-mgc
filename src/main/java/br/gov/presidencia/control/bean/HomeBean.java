@@ -5,12 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.gov.presidencia.facade.UsuarioFacade;
+import br.gov.presidencia.facade.ServiceFacade;
 import br.gov.presidencia.model.Usuario;
 
 @Named
@@ -20,7 +19,7 @@ public class HomeBean extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 4691727887817841891L;
 		
 	@Inject
-	private UsuarioFacade usuarioFacade;
+	private ServiceFacade usuarioFacade;
 	
 	private List<Usuario> usuarios;
 	private Usuario usuario;
@@ -29,7 +28,8 @@ public class HomeBean extends AbstractBean implements Serializable {
 	@PostConstruct
 	public void initHome() {
 		if(!iniciado) {
-			usuarios = usuarioFacade.listAll();
+			//usuarios = usuarioFacade.listAllUsers();
+			usuarios = usuarioFacade.findUsuarioByNome("flavio");
 			usuario = getUsuarioLogadoCookie();
 			iniciado = true;
 		}

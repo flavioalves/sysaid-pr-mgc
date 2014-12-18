@@ -9,8 +9,7 @@
 
 	<ui:define name="body">
 		
-		<div class="row">
-		
+		<div class="row">		
 			<h3>
 				<h:outputText value="#{msg['menu.gerente']}"  />
 			</h3>
@@ -27,8 +26,10 @@
 				<p:commandButton actionListener="#{gerenteDeContasMB.pesquisarGerente}" icon="ui-icon-search"
 					 title="pesquisar" value="Pesquisar" update="@form"/>
 					 
-				<p:commandButton  icon="ui-icon-note" title="Novo" value="Novo" styleClass="pull-right"
-					oncomplete="PF('listaTecnicoPopup').show()"/>			
+				<p:commandButton  icon="ui-icon-note" title="Listar gerentes de conta" value="Listar gerentes de conta" styleClass="pull-right"
+					oncomplete="PF('listaTecnicoPopup').show()" 
+					update="@form">
+				</p:commandButton>			
 		    </p:panel>
 			
  			<div class="row">
@@ -59,9 +60,9 @@
 		        		
 		        		<p:column>
 							<f:facet name="header">
-								<h:outputText value="Ramal" styleClass="title-column" />
+								<h:outputText value="Telefone" styleClass="title-column" />
 							</f:facet> 
-		          			 #{gerente.ramal}
+		          			 #{gerente.telefone}
 		        		</p:column>
 		        		
 		        		<p:column width="18%">
@@ -69,10 +70,17 @@
 								<h:outputText value="Ações" styleClass="title-column" />							
 							</f:facet> 
 		          			<p:commandButton id="editar-gerente"  icon="ui-icon-pencil" title="Editar" value="Editar" 
-		          							 oncomplete="PF('listaTecnicoPopup').show()"/>
+		          							 actionListener="#{gerenteDeContasMB.editarVinculo}"
+		          							 update="@form" 
+		          							 oncomplete="PF('listaTecnicoPopup').show()">
+		          							 <f:attribute name="gerente" value="#{gerente}" />
+		          			</p:commandButton>
 		          							 
 		          			<p:commandButton id="excluir-gerente"  icon="ui-icon-trash" title="Excluir" value="Excluir" style="margin-left: 10px"
-		          			 			     actionListener="#{gerenteDeContasMB.excluirVinculo}" update="@form" />
+		          			 			     actionListener="#{gerenteDeContasMB.excluirVinculo}" 
+		          			 			     update="@form">
+		          			 				<f:attribute name="gerente" value="#{gerente}" />
+		          			</p:commandButton>
 		        		</p:column>	        
 					</p:dataTable>
 				

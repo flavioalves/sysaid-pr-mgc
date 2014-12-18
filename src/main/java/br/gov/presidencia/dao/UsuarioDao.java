@@ -13,6 +13,8 @@ import br.gov.presidencia.model.Usuario;
 @Named
 public class UsuarioDao extends GenericDao<Usuario> {
 	
+	private static final long serialVersionUID = -3501828520309506308L;
+	
 	public UsuarioDao() {
 		super(Usuario.class);
 	}
@@ -73,13 +75,12 @@ public class UsuarioDao extends GenericDao<Usuario> {
 			lista.add(user);
 		}
 		
-		
 		return lista;
 	}
 	
 	public List<Usuario> findUsuarioByNome(String nome){		
 		TypedQuery<Usuario> query = this.getEntityManager().createNamedQuery("Usuario.findUserByName", Usuario.class);
-		query.setParameter("nome", "%" +nome +"%");
+		query.setParameter("nome", "%" +nome.toUpperCase() +"%");
 		query.setMaxResults(20);
 		return query.getResultList();
 		
@@ -92,12 +93,5 @@ public class UsuarioDao extends GenericDao<Usuario> {
 	       query.setParameter("userName", userName);
 	       return (Usuario) query.getSingleResult();
 	}
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3501828520309506308L;
-
-
 
 }

@@ -13,17 +13,17 @@
 		width="600" position="top">		
 		
 		<div class="row search-bar" style="margin: 10px;">	 			
-			<p:outputLabel value="Nome gerente:" for="acGerente" style="margin-right: 6px" />			
-        	<p:autoComplete id="acGerente" value="#{gerenteDeContasMB.nomeGerente}" completeMethod="#{gerenteDeContasMB.autocomplete}"/>
-			<span class="ui-icon ui-icon-search" ></span>        		        	
+			<p:outputLabel value="Nome gerente:" for="nomeGerente" style="margin-right: 6px" />	
+			
+			<p:inputText id="nomeGerente" value="#{gerenteDeContasMB.selectedGerente.nome}" disabled="true" style="width: 100%;" /> 				        		        	
  	 	</div>
  	 			
 		<hr/>	
 		
 		<div class="row">			 	 			 
 		    <p:pickList id="pickList" value="#{gerenteDeContasMB.areasAtendimento}" var="area"
-		                itemValue="#{area}" itemLabel="#{area}" styleClass="atendimentoPickList"
-		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+		                itemValue="#{area}" itemLabel="#{area}" converter="areaConverter" 
+		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"  styleClass="atendimentoPickList">
 		                
 				<f:facet name="sourceCaption">Áreas de trabalho</f:facet>
 	        	<f:facet name="targetCaption">Áreas Associada</f:facet>	                
@@ -31,11 +31,13 @@
 			<hr/>
 			
 			<p:commandButton icon="ui-icon-disk" title="Salvar" value="Salvar" styleClass="pull-right" 
-							 actionListener="#{gerenteDeContasMB.salvarVinculo}" update="@form" />
+							 actionListener="#{gerenteDeContasMB.salvarVinculo}" update="@form" >
+							  <f:attribute name="gerente" value="#{gerente}" />
+			</p:commandButton>
 				
 			<p:commandButton icon="ui-icon-arrowreturnthick-1-w" title="Voltar" value="Voltar" 
 							 actionListener="#{gerenteDeContasMB.limparVinculo}" 
-							 styleClass="pull-right" onclick="listaTecnicoPopup.hide()"/>
+							 styleClass="pull-right" onclick="this.hide()"/>
 		</div>
 	</p:dialog>
 
