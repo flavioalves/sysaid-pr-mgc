@@ -11,6 +11,7 @@ import br.gov.presidencia.dao.AreaAtendimentoDao;
 import br.gov.presidencia.dao.UsuarioDao;
 import br.gov.presidencia.dao.VinculoGerenteDao;
 import br.gov.presidencia.model.AreaAtendimento;
+import br.gov.presidencia.model.GerenteContasVO;
 import br.gov.presidencia.model.Usuario;
 import br.gov.presidencia.model.VinculoGerente;
 
@@ -43,6 +44,10 @@ public class ServiceFacade implements Serializable {
 		return vinculoGerenteDao.findVinculosByUsername(username);
 	}
 
+	public List<GerenteContasVO> listarGerentesDeConta() {
+		return vinculoGerenteDao.listarGerentesDeConta();
+	}
+	
 	public List<Usuario> listAllPorGrupoRelatorioPerido(String grupoId, Date inicio, Date fim) {
 		List<Usuario> lista = this.getUsuarioDao() .listAllPorGrupoRelatorioPerido(grupoId, inicio, fim);
 

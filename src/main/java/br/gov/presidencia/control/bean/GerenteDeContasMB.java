@@ -16,6 +16,7 @@ import org.primefaces.model.DualListModel;
 
 import br.gov.presidencia.facade.ServiceFacade;
 import br.gov.presidencia.model.AreaAtendimento;
+import br.gov.presidencia.model.GerenteContasVO;
 import br.gov.presidencia.model.Usuario;
 import br.gov.presidencia.model.VinculoGerente;
 
@@ -35,7 +36,10 @@ public class GerenteDeContasMB extends AbstractBean {
 	private DualListModel<AreaAtendimento> areasAtendimento;
 	private boolean shouldRender;
 	private List<AreaAtendimento> areasAtendimentoSource;
-	List<AreaAtendimento> areasAtendimentoTarget;
+	private List<AreaAtendimento> areasAtendimentoTarget;
+	
+	private List<GerenteContasVO> listaGerentesContas;
+	
 	
 	@PostConstruct
 	public void init() {
@@ -65,7 +69,7 @@ public class GerenteDeContasMB extends AbstractBean {
 				vinculo.setCodLotacao(area.getCodUnidade().toString());
 				vinculo.setUserName(selectedGerente.getUserName());
 				vinculo.setNome(selectedGerente.getNome());
-				vinculo.setUserNameCadastro(getUsuarioLogadoCookie().getNome() != null ? getUsuarioLogadoCookie().getNome() : "sysaid"); 
+				vinculo.setUserNameCadastro(getUsuarioLogadoCookie() != null ? getUsuarioLogadoCookie().getNome() : "sysaid"); 
 				vinculo.setDtCadastro(new Date());	
 				try {
 					serviceFachada.salvarVinculoGerente(vinculo);
@@ -116,7 +120,29 @@ public class GerenteDeContasMB extends AbstractBean {
 		addMessage("Vinculos excluidos com sucesso!");
 	}
 	
-	
+
+	public List<GerenteContasVO> getListaGerentesContas() {
+		listaGerentesContas = serviceFachada.listarGerentesDeConta();
+		
+		for (GerenteContasVO vo : listaGerentesContas) {
+			List<VinculoGerente> vinculosGerenteAtual = serviceFachada.listVinculosDeArearPorGerente(vo.getUsername());
+			if(vinculosGerenteAtual != null && vinculosGerenteAtual.size() > 0){
+				List<String> codLotacoes = new ArrayList<String>();
+				for (VinculoGerente vinculoGerente : vinculosGerenteAtual) {
+					codLotacoes.add(vinculoGerente.getCodLotacao());
+				}
+				
+				vo.setContas(serviceFachada.listAreasByCodLotacao(codLotacoes));
+			}
+		}		
+		
+		return listaGerentesContas;
+	}
+
+	public void setListaGerentesContas(List<GerenteContasVO> listaGerentesContas) {
+		this.listaGerentesContas = listaGerentesContas;
+	}
+
 	public void limparVinculo(ActionEvent ev){
 		//addMessage("Limpar");
 	}
@@ -139,16 +165,6 @@ public class GerenteDeContasMB extends AbstractBean {
 		this.listaGerentes = listaGerentes;
 	}
 	
-   public List<Usuario> autocomplete(String query) {
-		listaGerentes = serviceFachada.findUsuarioByNome(query);
-		
-		if(listaGerentes != null && listaGerentes.size() > 0){
-			this.shouldRender = true;	
-		} 
-		return listaGerentes;
-		
-    }
-
 	public boolean isShouldRender() {
 		shouldRender = listaGerentes != null && this.listaGerentes.size() > 0 ? true : false;
 		return shouldRender;
