@@ -9,9 +9,11 @@ import javax.inject.Named;
 
 import br.gov.presidencia.dao.AreaAtendimentoDao;
 import br.gov.presidencia.dao.UsuarioDao;
+import br.gov.presidencia.dao.ViewDao;
 import br.gov.presidencia.dao.VinculoGerenteDao;
 import br.gov.presidencia.model.AreaAtendimento;
 import br.gov.presidencia.model.GerenteContasVO;
+import br.gov.presidencia.model.SysaidView;
 import br.gov.presidencia.model.Usuario;
 import br.gov.presidencia.model.VinculoGerente;
 
@@ -28,9 +30,17 @@ public class ServiceFacade implements Serializable {
 	
 	@Inject
 	private VinculoGerenteDao vinculoGerenteDao;
+	
+	@Inject
+	private ViewDao viewDao;
 
+	public List<SysaidView> listViewItens(){
+		return viewDao.findAll();
+	}
+	
 	public List<AreaAtendimento> listAreas() {
-		return areaDao.findAll();
+		//return areaDao.findAll();
+		return areaDao.listAreas(); 
 	}
 
 	public void salvarVinculoGerente(VinculoGerente vinculo) throws Exception {
@@ -54,6 +64,10 @@ public class ServiceFacade implements Serializable {
 		return lista;
 	}
 
+	public List<VinculoGerente> findVinculosByUsernameAndCodLotacao(String userName, String codLotacao){
+		return vinculoGerenteDao.findVinculosByUsernameAndCodLotacao(userName, codLotacao);
+	}
+	
 	public List<Usuario> findUsuarioByNome(String nome) {
 		return this.getUsuarioDao().findUsuarioByNome(nome);
 	}
@@ -80,6 +94,20 @@ public class ServiceFacade implements Serializable {
 
 	public void excluirVinculo(VinculoGerente vinculoGerente) throws Exception {
 		vinculoGerenteDao.delete(vinculoGerente);	
+	}
+
+	public void excluirVinculo(String userName, List<AreaAtendimento> itensRemovidos) throws Exception {
+		for (AreaAtendimento areaAtendimento : itensRemovidos) {
+			List<VinculoGerente> vinculo = findVinculosByUsernameAndCodLotacao(userName, areaAtendimento.getCodUnidade().toString());
+			
+			for (VinculoGerente vinculoGerente : vinculo) {
+				excluirVinculo(vinculoGerente);
+			}
+		}
+	}
+
+	public List<Usuario> findUsuarioTipoGerente() {
+		return this.getUsuarioDao().findUsuarioTipoGerente();
 	}
 
 }

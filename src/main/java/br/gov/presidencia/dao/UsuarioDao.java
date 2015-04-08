@@ -81,7 +81,6 @@ public class UsuarioDao extends GenericDao<Usuario> {
 	public List<Usuario> findUsuarioByNome(String nome){		
 		TypedQuery<Usuario> query = this.getEntityManager().createNamedQuery("Usuario.findUserByName", Usuario.class);
 		query.setParameter("nome", "%" +nome.toUpperCase() +"%");
-		query.setMaxResults(20);
 		return query.getResultList();
 		
 	}
@@ -92,6 +91,12 @@ public class UsuarioDao extends GenericDao<Usuario> {
 	       Query query = getEntityManager().createQuery("From Usuario user WHERE UPPER(user.userName) = UPPER(:userName)");
 	       query.setParameter("userName", userName);
 	       return (Usuario) query.getSingleResult();
+	}
+	
+	public List<Usuario> findUsuarioTipoGerente() {
+		TypedQuery<Usuario> query = this.getEntityManager().createNamedQuery("Usuario.findUsuarioTipoGerente", Usuario.class);
+
+		return query.getResultList();		
 	}
 
 }

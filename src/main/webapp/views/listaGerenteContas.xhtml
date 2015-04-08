@@ -9,7 +9,7 @@
 	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
 
 	<ui:define name="body">
-		
+			
 		<div class="row">		
 			<h3>
 				<h:outputText value="#{msg['menu.gerente']}"  />
@@ -17,10 +17,22 @@
 		</div>
 		
 			
-		<c:forEach items="#{gerenteDeContasMB.listaGerentesContas}" var="gerente">
+		<c:forEach items="#{relatorioGerenteDeContaMB.listaGerentesContas}" var="gerente">
 			<div class="row">
-				#{gerente.nomeGerente} - #{gerente.email} - #{gerente.telefone} 
-				<ul>
+				<table style="margin-bottom: 15px;">
+				 <tr>
+				 	<th width="450px">Nome</th>
+				 	<th width="300px">Email</th>
+				 	<th width="250px">Telefone</th>
+				 </tr>
+				 <tr>
+				 	<td>#{gerente.nomeGerente}</td>
+				 	<td>#{gerente.email} </td>
+				 	<td>#{gerente.telefone}</td>
+				 </tr>
+				</table>
+				<b>Áreas de atendimento</b>  <br/>
+				<ul style="list-style: none;">
 					<c:forEach items="#{gerente.contas}" var="conta">
 						<li>#{conta.sigla} - #{conta.nome}</li>
 					</c:forEach>
@@ -28,9 +40,6 @@
 				<hr/>
 			</div>					
 		</c:forEach>
-			
-		
-		
 
 	</ui:define>
 </ui:composition>

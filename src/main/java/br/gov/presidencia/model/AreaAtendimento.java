@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "MF_TAB0025")
+@Table(name = "TAB0025", schema="ORADADOS")
 public class AreaAtendimento {
 
 	@Id
@@ -21,6 +21,9 @@ public class AreaAtendimento {
 
 	@Column(name = "COD_ESTRUTURAL")
 	private String codEstruturado;
+	
+	@Column(name = "SEQ_HIERARQUIA")
+	private String seqHierarquia;
 
 	public String getNome() {
 		return nome;
@@ -66,7 +69,7 @@ public class AreaAtendimento {
 
 	@Override
 	public String toString() {
-		return sigla + " - " + nome;
+		return sigla + " - " + nome + " - " + codEstruturado;
 	}
 
 	@Override
@@ -90,5 +93,15 @@ public class AreaAtendimento {
 				: this.getCodUnidade().equals(((AreaAtendimento) obj).getCodUnidade()))
 				: false;
 	}
+
+	public String getSeqHierarquia() {
+		return seqHierarquia;
+	}
+
+	public void setSeqHierarquia(String seqHierarquia) {
+		this.seqHierarquia = seqHierarquia;
+	}
+	
+	
 
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,7 +14,8 @@ import br.gov.presidencia.facade.ServiceFacade;
 import br.gov.presidencia.model.Usuario;
 
 @Named
-@ViewScoped
+//@ViewScoped
+@SessionScoped
 public class HomeBean extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 4691727887817841891L;

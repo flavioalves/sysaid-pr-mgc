@@ -10,7 +10,7 @@
 
 	<p:dialog header="Associar gerente responsável" widgetVar="listaTecnicoPopup" styleClass="gerente-modal"
 		modal="true" showEffect="fade" hideEffect="fade" resizable="false"
-		width="600" position="top">		
+		width="1000" position="top">		
 		
 		<div class="row search-bar" style="margin: 10px;">	 			
 			<p:outputLabel value="Nome gerente:" for="nomeGerente" style="margin-right: 6px" />	
@@ -36,8 +36,7 @@
 			</p:commandButton>
 				
 			<p:commandButton icon="ui-icon-arrowreturnthick-1-w" title="Voltar" value="Voltar" 
-							 actionListener="#{gerenteDeContasMB.limparVinculo}" 
-							 styleClass="pull-right" onclick="this.hide()"/>
+							 styleClass="pull-right" onclick="listaTecnicoPopup.hide();"/>
 		</div>
 	</p:dialog>
 

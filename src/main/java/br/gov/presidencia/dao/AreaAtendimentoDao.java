@@ -15,6 +15,15 @@ public class AreaAtendimentoDao extends GenericDao<AreaAtendimento> {
 		super(AreaAtendimento.class);
 	}
 
+	public List<AreaAtendimento> listAreas() {
+		List<AreaAtendimento> areas = new ArrayList<AreaAtendimento>();
+		String sql = "FROM AreaAtendimento area WHERE area.seqHierarquia = 999 ORDER BY area.sigla";
+		//String sql = "FROM AreaAtendimento area WHERE area.codUnidade IN (SELECT DISTINCT (v.codLotacao) FROM SysaidView v) ORDER BY area.sigla";
+		//String sql = "FROM AreaAtendimento area WHERE area.codUnidade IN (SELECT DISTINCT (v.codLotacao) FROM SysaidView v)";
+		Query query = getEntityManager().createQuery(sql);	       
+		return query.getResultList();
+	}
+	
 	public List<AreaAtendimento> listAreasByCodLotacao(List<String> codLotacoes) {
 		List<AreaAtendimento> areas = new ArrayList<AreaAtendimento>();
 		List<Integer> cods = new ArrayList<Integer>();		

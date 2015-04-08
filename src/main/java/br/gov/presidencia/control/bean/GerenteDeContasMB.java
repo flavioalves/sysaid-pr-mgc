@@ -12,11 +12,11 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.collections.ListUtils;
 import org.primefaces.model.DualListModel;
 
 import br.gov.presidencia.facade.ServiceFacade;
 import br.gov.presidencia.model.AreaAtendimento;
-import br.gov.presidencia.model.GerenteContasVO;
 import br.gov.presidencia.model.Usuario;
 import br.gov.presidencia.model.VinculoGerente;
 
@@ -36,9 +36,8 @@ public class GerenteDeContasMB extends AbstractBean {
 	private DualListModel<AreaAtendimento> areasAtendimento;
 	private boolean shouldRender;
 	private List<AreaAtendimento> areasAtendimentoSource;
-	private List<AreaAtendimento> areasAtendimentoTarget;
-	
-	private List<GerenteContasVO> listaGerentesContas;
+	private List<AreaAtendimento> areasAtendimentoTarget;		
+	private List<AreaAtendimento> areasJaVinculadas;
 	
 	
 	@PostConstruct
@@ -51,7 +50,8 @@ public class GerenteDeContasMB extends AbstractBean {
 	}
 	
 	public void pesquisarGerente(ActionEvent event) {
-		if(nomeGerentePesquisado != null){
+		if(nomeGerentePesquisado != null && nomeGerentePesquisado.length() > 1){
+
 			listaGerentes = serviceFachada.findUsuarioByNome(nomeGerentePesquisado);
 			
 			if(listaGerentes != null && listaGerentes.size() > 0){
@@ -59,11 +59,14 @@ public class GerenteDeContasMB extends AbstractBean {
 			} else { 
 				addMessage("Não foram encontrados resultados para os parâmetros informados.");
 			}
+		} else {
+			listaGerentes = serviceFachada.findUsuarioTipoGerente();
 		}
 	}
 	
 	public void salvarVinculo(ActionEvent ev){				
 		if(selectedGerente != null){
+			//salva novos vinculos
 			for (AreaAtendimento area : areasAtendimento.getTarget()) {
 				VinculoGerente vinculo = new VinculoGerente();
 				vinculo.setCodLotacao(area.getCodUnidade().toString());
@@ -71,12 +74,23 @@ public class GerenteDeContasMB extends AbstractBean {
 				vinculo.setNome(selectedGerente.getNome());
 				vinculo.setUserNameCadastro(getUsuarioLogadoCookie() != null ? getUsuarioLogadoCookie().getNome() : "sysaid"); 
 				vinculo.setDtCadastro(new Date());	
+				
 				try {
 					serviceFachada.salvarVinculoGerente(vinculo);
 				} catch (Exception e) {
 					errorMessage("Ocorreu um erro ao salvar o vínculo.");
 				}
 			}
+			
+			//remove itens desvinculados
+			List<AreaAtendimento> itensRemovidos = ListUtils.subtract(areasJaVinculadas, areasAtendimento.getTarget());
+			try {
+				serviceFachada.excluirVinculo(selectedGerente.getUserName(), itensRemovidos);
+			} catch (Exception e) {
+				errorMessage("Ocorreu um erro ao editar o vínculo.");
+			}
+			
+			
 			addMessage("Área(s) vinculas ao gerente de contas");
 		} else {
 			addMessage("Selecione um gerente para vincular a alguma área.");
@@ -96,10 +110,10 @@ public class GerenteDeContasMB extends AbstractBean {
 				codLotacoes.add(vinculoGerente.getCodLotacao());
 			}
 			
-			List<AreaAtendimento> areasVinculadas = serviceFachada.listAreasByCodLotacao(codLotacoes);
+			areasJaVinculadas = serviceFachada.listAreasByCodLotacao(codLotacoes);
 			//get codigo lotacao end find areas		
 			areasAtendimento.getTarget().clear();
-			areasAtendimento.getTarget().addAll(areasVinculadas);			
+			areasAtendimento.getTarget().addAll(areasJaVinculadas);			
 		}else {
 			//limpa vinculos
 			areasAtendimentoTarget = new ArrayList<AreaAtendimento>();
@@ -118,29 +132,6 @@ public class GerenteDeContasMB extends AbstractBean {
 			}
 		}
 		addMessage("Vinculos excluidos com sucesso!");
-	}
-	
-
-	public List<GerenteContasVO> getListaGerentesContas() {
-		listaGerentesContas = serviceFachada.listarGerentesDeConta();
-		
-		for (GerenteContasVO vo : listaGerentesContas) {
-			List<VinculoGerente> vinculosGerenteAtual = serviceFachada.listVinculosDeArearPorGerente(vo.getUsername());
-			if(vinculosGerenteAtual != null && vinculosGerenteAtual.size() > 0){
-				List<String> codLotacoes = new ArrayList<String>();
-				for (VinculoGerente vinculoGerente : vinculosGerenteAtual) {
-					codLotacoes.add(vinculoGerente.getCodLotacao());
-				}
-				
-				vo.setContas(serviceFachada.listAreasByCodLotacao(codLotacoes));
-			}
-		}		
-		
-		return listaGerentesContas;
-	}
-
-	public void setListaGerentesContas(List<GerenteContasVO> listaGerentesContas) {
-		this.listaGerentesContas = listaGerentesContas;
 	}
 
 	public void limparVinculo(ActionEvent ev){

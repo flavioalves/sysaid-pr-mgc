@@ -25,8 +25,7 @@ public class VinculoGerenteDao extends GenericDao<VinculoGerente> {
 		return query.getResultList();	
 	}
 
-	public List<VinculoGerente> findVinculosByUsernameAndCodLotacao(String userName,
-			String codLotacao) {
+	public List<VinculoGerente> findVinculosByUsernameAndCodLotacao(String userName, String codLotacao) {
 		TypedQuery<VinculoGerente> query = this.getEntityManager().createNamedQuery("VinculoGerente.findVinculosByUsernameAndCodLotacao", VinculoGerente.class);
 		query.setParameter("username", userName );
 		query.setParameter("codLotacao", codLotacao );
@@ -36,7 +35,7 @@ public class VinculoGerenteDao extends GenericDao<VinculoGerente> {
 	
 	public List<GerenteContasVO> listarGerentesDeConta() {
 		String jpql = "SELECT NEW br.gov.presidencia.model.GerenteContasVO(u.nome, u.email, u.telefone, u.userName) "
-					+ "FROM VinculoGerente v, Usuario u WHERE v.userName = u.userName GROUP BY v.userName";		
+					+ "FROM VinculoGerente v, Usuario u WHERE v.userName = u.userName GROUP BY u.userName, u.nome, u.email, u.telefone";		
         Query query = getEntityManager().createQuery(jpql);
 
        return query.getResultList();
